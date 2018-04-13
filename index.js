@@ -14,6 +14,7 @@ exports.options = {
   hosts: [
     'localhost:9200'
   ],
+  keepAlive: true,
   log: [{
     type: 'stdio',
     levels: ['error']
@@ -24,9 +25,7 @@ exports.options = {
 exports.metadata = {
   name: 'ElasticSearch',
   type: 'service',
-  param: 'ElasticSearch',
-  depends: [],
-  provides: []
+  param: 'ElasticSearch'
 }
 
 exports.plugin = {
@@ -34,6 +33,7 @@ exports.plugin = {
     let baseConfig = {
       hosts: this.options.hosts,
       apiVersion: this.options.apiVersion,
+      keepAlive: this.options.keepAlive,
       log: this.options.log
     }
     let loadObj = this.loadObj = {}
@@ -48,12 +48,13 @@ exports.plugin = {
   start: function(done) {
     this.loadObj.Client.ping({requestTimeout: 1000})
       .then(() => {
+        this.Logger.log('Connection successful.')
         this.loadObj.meta.available = true
         done()
       })
       .catch((err) => {
         this.loadObj.meta.available = true
-        this.Logger.error("ElasticSearch is unavailable.")
+        this.Logger.error('ElasticSearch is unavailable.')
         done()
       })
     done()
