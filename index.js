@@ -18,6 +18,7 @@ exports.options = {
     type: 'stdio',
     levels: ['error']
   }],
+  requestTimeout: 1000,
   additionalOptions: {}
 }
 
@@ -36,13 +37,26 @@ exports.plugin = {
       apiVersion: this.options.apiVersion,
       log: this.options.log
     }
+    let loadObj = this.loadObj = {}
 
     let config = merge(baseConfig, this.options.additionalOptions)
     let client = new elasticsearch.Client(config)
+    loadObj.Client = client
+    loadObj.meta = {}
 
-    loaded(null, client)
+    loaded(null, loadObj)
   },
   start: function(done) {
+    this.loadObj.Client.ping({requestTimeout: 1000})
+      .then(() => {
+        this.loadObj.meta.available = true
+        done()
+      })
+      .catch((err) => {
+        this.loadObj.meta.available = true
+        this.Logger.error("ElasticSearch is unavailable.")
+        done()
+      })
     done()
   },
   stop: function(done) {
