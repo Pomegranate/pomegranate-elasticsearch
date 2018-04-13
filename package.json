@@ -17,5 +17,14 @@
   "dependencies": {
     "elasticsearch": "^14.2.2",
     "lodash.merge": "^4.6.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pomegranate/pomegranate-elasticsearch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Pomegranate/pomegranate-elasticsearch/issues"
+  },
+  "homepage": "https://github.com/Pomegranate/pomegranate-elasticsearch#readme"
 }

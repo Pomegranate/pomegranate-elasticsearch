@@ -14,6 +14,10 @@ exports.options = {
   hosts: [
     'localhost:9200'
   ],
+  log: [{
+    type: 'stdio',
+    levels: ['error']
+  }],
   additionalOptions: {}
 }
 
@@ -29,11 +33,12 @@ exports.plugin = {
   load: function(inject, loaded) {
     let baseConfig = {
       hosts: this.options.hosts,
-      apiVersion: this.options.apiVersion
+      apiVersion: this.options.apiVersion,
+      log: this.options.log
     }
 
     let config = merge(baseConfig, this.options.additionalOptions)
-    let client = new elasticsearch(config)
+    let client = new elasticsearch.Client(config)
 
     loaded(null, client)
   },
