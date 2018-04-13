@@ -18,7 +18,6 @@ exports.options = {
     type: 'stdio',
     levels: ['error']
   }],
-  requestTimeout: 1000,
   additionalOptions: {}
 }
 
