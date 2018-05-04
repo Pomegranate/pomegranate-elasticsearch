@@ -23,7 +23,7 @@ exports.options = {
 }
 
 exports.metadata = {
-  frameworkVesion: 6,
+  frameworkVersion: 6,
   name: 'ElasticSearch',
   type: 'service',
   param: 'ElasticSearch'
