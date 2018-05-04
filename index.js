@@ -23,43 +23,40 @@ exports.options = {
 }
 
 exports.metadata = {
+  frameworkVesion: 6,
   name: 'ElasticSearch',
   type: 'service',
   param: 'ElasticSearch'
 }
 
 exports.plugin = {
-  load: function(inject, loaded) {
+  load: function(Options, Logger) {
     let baseConfig = {
-      hosts: this.options.hosts,
-      apiVersion: this.options.apiVersion,
-      keepAlive: this.options.keepAlive,
-      log: this.options.log
+      hosts: Options.hosts,
+      apiVersion: Options.apiVersion,
+      keepAlive: Options.keepAlive,
+      log: Options.log
     }
-    let loadObj = this.loadObj = {}
+    let loadObj = {}
 
-    let config = merge(baseConfig, this.options.additionalOptions)
+    let config = merge(baseConfig, Options.additionalOptions)
     let client = new elasticsearch.Client(config)
     loadObj.Client = client
     loadObj.meta = {}
 
-    loaded(null, loadObj)
+    return loadObj
   },
-  start: function(done) {
-    this.loadObj.Client.ping({requestTimeout: 1000})
+  start: function(ElasticSearch, Logger) {
+    return ElasticSearch.Client.ping({requestTimeout: 1000})
       .then(() => {
-        this.Logger.log('Connection successful.')
-        this.loadObj.meta.available = true
-        done()
+        Logger.log('Connection successful.')
+        ElasticSearch.available = true
+        return true
       })
       .catch((err) => {
-        this.loadObj.meta.available = true
+        ElasticSearch.meta.available = false
         this.Logger.error('ElasticSearch is unavailable.')
-        done()
+        return true
       })
-    done()
-  },
-  stop: function(done) {
-    done()
   }
 }
