@@ -26,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/Pomegranate/pomegranate-elasticsearch/issues"
   },
-  "homepage": "https://github.com/Pomegranate/pomegranate-elasticsearch#readme"
+  "homepage": "https://github.com/Pomegranate/pomegranate-elasticsearch#readme",
+  "peerDependencies": {
+    "pomegranate": "6"
+  }
 }
