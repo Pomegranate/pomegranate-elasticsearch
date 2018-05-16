@@ -47,6 +47,9 @@ exports.plugin = {
     return loadObj
   },
   start: function(ElasticSearch, Logger) {
+    if(ElasticSearch){
+
+    }
     return ElasticSearch.Client.ping({requestTimeout: 1000})
       .then(() => {
         Logger.log('Connection successful.')
@@ -55,7 +58,7 @@ exports.plugin = {
       })
       .catch((err) => {
         ElasticSearch.meta.available = false
-        this.Logger.error('ElasticSearch is unavailable.')
+        Logger.error('ElasticSearch is unavailable.')
         return true
       })
   }
